@@ -15,16 +15,48 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
     - name: Build
       run: cargo build --verbose
+
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
     - name: Run tests
       run: cargo test --verbose
-    - name: Run code coverage
-      run: cargo install cargo-tarpaulin && cargo tarpaulin --ignore-tests
-    - name: Run lint
+
+  code coverage:
+    -steps:
+      uses: actions/checkout@v2
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Run cargo-tarpaulin
+        uses: actions-rs/tarpaulin@v0.1
+        with:
+          version: '0.15.0'
+        args: '-- --test-threads 1'
+
+  format:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      uses: actions/checkout@v2
+      - name: Format
+        run: cargo fmt -- --check
+
+  lint:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      uses: actions/checkout@v2
+    - name: Lint
       run: cargo clippy -- -D warnings
-    - name: Format
-      run: cargo fmt -- --check
-    - name: Vulnerabilities
-      run: cargo install cargo-audit && cargo audit
