@@ -16,23 +16,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
       - name: Build
         run: cargo build --verbose
 
-  test:
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
       - name: Run tests
         run: cargo test --verbose
 
-  code_coverage:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
       - name: Install stable toolchain
         uses: actions-rs/toolchain@v1
         with:
@@ -45,20 +35,8 @@ jobs:
           version: '0.15.0'
           args: '-- --test-threads 1'
 
-  format:
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
       - name: Format
         run: cargo fmt -- --check
 
-  lint:
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
       - name: Lint
         run: cargo clippy -- -D warnings
