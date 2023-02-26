@@ -29,6 +29,8 @@ jobs:
         run: cargo test --verbose
 
   code coverage:
+    runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
       - name: Install stable toolchain
