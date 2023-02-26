@@ -28,7 +28,7 @@ jobs:
       - name: Run tests
         run: cargo test --verbose
 
-  code coverage:
+  code_coverage:
     runs-on: ubuntu-latest
 
     steps:
