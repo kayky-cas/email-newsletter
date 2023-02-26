@@ -8,18 +8,19 @@ async fn health_check_works() {
         .get(format!("{}/health_check", address))
         .send()
         .await
-        .expect("Failed to execute request.");
+        .unwrap_or_else(|_| panic!("Failed to execute request."));
 
     assert!(response.status().is_success());
     assert_eq!(Some(0), response.content_length());
 }
 
 fn spawn_app() -> String {
-    let listener =
-        std::net::TcpListener::bind(("127.0.0.1", 0)).expect("Faild to bind a random port!");
+    let listener = std::net::TcpListener::bind(("127.0.0.1", 0))
+        .unwrap_or_else(|_| panic!("Faild to bind a random port!"));
 
     let port = listener.local_addr().unwrap().port();
-    let server = email_newsletter::run(listener).expect("Faild to bind address!");
+    let server =
+        email_newsletter::run(listener).unwrap_or_else(|_| panic!("Faild to bind address!"));
 
     let _ = tokio::spawn(server);
 
