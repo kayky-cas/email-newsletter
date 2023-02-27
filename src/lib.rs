@@ -28,14 +28,3 @@ pub fn run(listener: TcpListener) -> std::io::Result<Server> {
 
     Ok(server)
 }
-#[cfg(test)]
-mod tests {
-    use crate::health_check;
-
-    #[tokio::test]
-    async fn health_check_succeeds() {
-        let response = health_check().await;
-
-        assert!(response.status().is_success())
-    }
-}
